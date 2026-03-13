@@ -1,1 +1,10 @@
-{}
+[
+  {
+    "cpf": 15970426956,
+    "nome": "Ryan",
+    "idade": 17,
+    "endereco": "bateias",
+    "bairro": "bateias",
+    "contato": 4199423808
+  }
+]
