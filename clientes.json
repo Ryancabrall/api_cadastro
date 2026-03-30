@@ -1,25 +1,10 @@
 [
   {
-    "cpf": 15970426956,
+    "cpf": "15970426956",
     "nome": "Ryan",
     "idade": 17,
     "endereco": "bateias",
     "bairro": "bateias",
     "contato": 4199423808
-  },
-  {
-    "cpf": 15970426955,
-    "nome": "Ryan",
-    "idade": 18,
-    "endereco": "bateias",
-    "bairro": "bateias",
-    "contato": 4199423808
-  }
-  {
-    "id": "101",
-    "nome": "Teclado Mecânico",
-    "preco": 250.00,
-    "categoria": "Periféricos",
-    "estoque": 15
   }
 ]
