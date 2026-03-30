@@ -6,5 +6,19 @@
     "endereco": "bateias",
     "bairro": "bateias",
     "contato": 4199423808
+  },
+  {
+    "cpf": "15970426957",
+    "nome": "bryan",
+    "idade": 17,
+    "endereco": "bateias",
+    "bairro": "bateias",
+    "contato": 4199423808
+  },
+  {
+    "codigo": 1,
+    "nome": "Ryan",
+    "email": "ryan@gmail.com",
+    "senha": "123456"
   }
 ]
