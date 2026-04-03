@@ -1,0 +1,14 @@
+[
+  {
+    "codigo": 20,
+    "nome": "bryan",
+    "email": "bryan@gmail.com",
+    "senha": "123456"
+  },
+  {
+    "codigo": 1,
+    "nome": "Ryan",
+    "email": "ryan@gmail.com",
+    "senha": "123456"
+  }
+]
