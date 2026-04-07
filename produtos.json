@@ -10,5 +10,11 @@
     "nome": "controle ps4",
     "preco": 130,
     "estoque": 200
+  },
+  {
+    "id": "103",
+    "nome": "controle de xbox",
+    "preco": 50,
+    "estoque": 42
   }
 ]
