@@ -13,9 +13,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2d1b69 0%, #0f0f0f 100%);
             min-height: 100vh;
             padding: 20px;
+            animation: backgroundShift 10s ease-in-out infinite;
         }
 
         .container {
@@ -52,16 +53,37 @@
             font-size: 16px;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .tab-button:hover::after {
+            width: 80%;
         }
 
         .tab-button:hover {
             background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
         }
 
         .tab-button.active {
             background: white;
-            color: #667eea;
+            color: #4a1d8f;
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
         }
 
         .tab-content {
@@ -104,12 +126,19 @@
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 16px;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            background: white;
         }
 
         input:focus, select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #4a1d8f;
+            box-shadow: 0 0 0 3px rgba(74, 29, 143, 0.2);
+            transform: scale(1.02);
+        }
+
+        input:hover, select:hover {
+            border-color: #a0a0a0;
         }
 
         .form-row {
@@ -119,7 +148,7 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4a1d8f 0%, #1a1a1a 100%);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -128,11 +157,32 @@
             font-size: 16px;
             transition: all 0.3s ease;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(74, 29, 143, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-1px) scale(1.02);
         }
 
         .btn-secondary {
@@ -163,12 +213,12 @@
         }
 
         .sort-btn:hover {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
+            background: rgba(74, 29, 143, 0.1);
+            color: #4a1d8f;
         }
 
         .sort-btn.active {
-            background: #667eea;
+            background: #4a1d8f;
             color: white;
         }
 
@@ -235,7 +285,24 @@
             width: 400px;
             max-width: 90%;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: modalSlideIn 0.3s ease;
+            animation: modalBounceIn 0.5s ease;
+        }
+
+        @keyframes modalBounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.7) translateY(-100px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05) translateY(0);
+            }
+            70% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
         .modal-header {
@@ -298,8 +365,8 @@
 
         .setting-group select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #4a1d8f;
+            box-shadow: 0 0 0 3px rgba(74, 29, 143, 0.2);
         }
 
         @keyframes modalSlideIn {
@@ -315,6 +382,18 @@
 
         .list-container {
             margin-top: 30px;
+            animation: containerFadeIn 0.6s ease;
+        }
+
+        @keyframes containerFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .list-item {
@@ -325,12 +404,32 @@
             border: 1px solid rgba(0, 0, 0, 0.08);
             font-size: 14px;
             line-height: 1.5;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.4s ease backwards;
+        }
+
+        .list-item:nth-child(1) { animation-delay: 0.05s; }
+        .list-item:nth-child(2) { animation-delay: 0.1s; }
+        .list-item:nth-child(3) { animation-delay: 0.15s; }
+        .list-item:nth-child(4) { animation-delay: 0.2s; }
+        .list-item:nth-child(5) { animation-delay: 0.25s; }
+        .list-item:nth-child(n+6) { animation-delay: 0.3s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .list-item:hover {
-            border-color: #667eea;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+            border-color: #4a1d8f;
+            box-shadow: 0 4px 15px rgba(74, 29, 143, 0.2);
+            transform: translateX(5px) scale(1.02);
         }
 
         .search-box {
@@ -346,15 +445,32 @@
         }
 
         .search-box input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #4a1d8f;
+            box-shadow: 0 0 0 3px rgba(74, 29, 143, 0.2);
         }
 
         .message {
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
-            animation: slideIn 0.3s ease;
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(-50px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05) translateY(0);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
         @keyframes slideIn {
@@ -384,9 +500,18 @@
             width: 50px;
             height: 50px;
             border: 5px solid #f3f3f3;
-            border-top: 5px solid #667eea;
+            border-top: 5px solid #4a1d8f;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite, pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(74, 29, 143, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(74, 29, 143, 0.9);
+            }
         }
 
         @keyframes spin {
@@ -417,12 +542,12 @@
         .success-checkmark {
             width: 80px;
             height: 80px;
-            background: #28a745;
+            background: #4a1d8f;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+            box-shadow: 0 4px 20px rgba(74, 29, 143, 0.4);
         }
 
         .success-checkmark::after {
@@ -452,6 +577,868 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        /* Nova animação de entrada para listas */
+        .list-item {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 14px;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.4s ease backwards;
+        }
+
+        .list-item:nth-child(1) { animation-delay: 0.05s; }
+        .list-item:nth-child(2) { animation-delay: 0.1s; }
+        .list-item:nth-child(3) { animation-delay: 0.15s; }
+        .list-item:nth-child(4) { animation-delay: 0.2s; }
+        .list-item:nth-child(5) { animation-delay: 0.25s; }
+        .list-item:nth-child(n+6) { animation-delay: 0.3s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .list-item:hover {
+            border-color: #4a1d8f;
+            box-shadow: 0 4px 15px rgba(74, 29, 143, 0.2);
+            transform: translateX(5px) scale(1.02);
+        }
+
+        /* Animações melhoradas para botões */
+        .btn {
+            background: linear-gradient(135deg, #4a1d8f 0%, #1a1a1a 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(74, 29, 143, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Animações para inputs */
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4a1d8f;
+            box-shadow: 0 0 0 3px rgba(74, 29, 143, 0.2);
+            transform: scale(1.02);
+        }
+
+        input:hover, select:hover {
+            border-color: #a0a0a0;
+        }
+
+        /* Animações para abas */
+        .tab-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .tab-button:hover::after {
+            width: 80%;
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #4a1d8f;
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Animações para cards de produtos */
+        .product-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: fadeInScale 0.5s ease backwards;
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(n+5) { animation-delay: 0.5s; }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .product-card:hover {
+            border-color: #4a1d8f;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.25);
+        }
+
+        .product-card.selected {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.05);
+            transform: scale(1.02);
+            animation: selectedPulse 0.6s ease;
+        }
+
+        @keyframes selectedPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1.02); }
+        }
+
+        /* Animações para itens do carrinho */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .cart-item:hover {
+            background: rgba(74, 29, 143, 0.05);
+            transform: translateX(-3px);
+        }
+
+        /* Animações para botões de quantidade */
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #4a1d8f;
+            background: white;
+            color: #4a1d8f;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #4a1d8f;
+            color: white;
+            transform: scale(1.2) rotate(180deg);
+        }
+
+        .quantity-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Animações para botões de remover */
+        .cart-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .cart-remove:hover {
+            background: #c82333;
+            transform: scale(1.2) rotate(90deg);
+        }
+
+        /* Animações para mensagens */
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(-50px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05) translateY(0);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Animações para modal */
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalBounceIn 0.5s ease;
+        }
+
+        @keyframes modalBounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.7) translateY(-100px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05) translateY(0);
+            }
+            70% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Animações para loading spinner */
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4a1d8f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite, pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(74, 29, 143, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(74, 29, 143, 0.9);
+            }
+        }
+
+        /* Animações para o header */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            animation: headerSlideDown 0.8s ease;
+        }
+
+        @keyframes headerSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        /* Animações para background */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2d1b69 0%, #0f0f0f 100%);
+            min-height: 100vh;
+            padding: 20px;
+            animation: backgroundShift 10s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% {
+                background: linear-gradient(135deg, #2d1b69 0%, #0f0f0f 100%);
+            }
+            25% {
+                background: linear-gradient(135deg, #0f0f0f 0%, #2d1b69 100%);
+            }
+            50% {
+                background: linear-gradient(135deg, #1a0e3d 0%, #000000 100%);
+            }
+            75% {
+                background: linear-gradient(135deg, #000000 0%, #2d1b69 100%);
+            }
+        }
+
+        /* Animações para botões de ordenação */
+        .sort-btn {
+            background: transparent;
+            color: #666;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .sort-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #4a1d8f;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .sort-btn:hover::before {
+            width: 100%;
+        }
+
+        .sort-btn:hover {
+            background: rgba(74, 29, 143, 0.1);
+            color: #4a1d8f;
+            transform: translateY(-2px);
+        }
+
+        .sort-btn.active {
+            background: #4a1d8f;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Animações para search box */
+        .search-box input {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: #4a1d8f;
+            box-shadow: 0 0 0 3px rgba(74, 29, 143, 0.2);
+            transform: scale(1.02);
+        }
+
+        .search-box input:hover {
+            border-color: #a0a0a0;
+        }
+
+        /* Animações para botões de logout e settings */
+        .logout-btn, .settings-btn {
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        .settings-btn:hover {
+            background: #5a6268;
+            transform: scale(1.1) rotate(-15deg);
+        }
+
+        /* Animação de flutuação para elementos importantes */
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Animações para badges */
+        .cart-badge {
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-left: 5px;
+            animation: badgePop 0.3s ease;
+        }
+
+        @keyframes badgePop {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Efeitos de partículas no background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: floatUp 15s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 15s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 18s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 6s; animation-duration: 14s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 8s; animation-duration: 16s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 10s; animation-duration: 13s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 12s; animation-duration: 17s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 14s; animation-duration: 15s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 16s; animation-duration: 19s; }
+        .particle:nth-child(10) { left: 95%; animation-delay: 18s; animation-duration: 14s; }
+
+        /* Efeito de brilho neon nos botões */
+        .btn {
+            background: linear-gradient(135deg, #4a1d8f 0%, #1a1a1a 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(74, 29, 143, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #4a1d8f, #8b5cf6, #4a1d8f);
+            border-radius: 8px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(74, 29, 143, 0.6), 0 0 30px rgba(139, 92, 246, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+            animation: borderGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% {
+                box-shadow: 0 0 5px #4a1d8f, 0 0 10px #4a1d8f, 0 0 15px #4a1d8f;
+            }
+            50% {
+                box-shadow: 0 0 10px #8b5cf6, 0 0 20px #8b5cf6, 0 0 30px #8b5cf6;
+            }
+        }
+
+        /* Efeito 3D nos cards */
+        .list-item, .product-card {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 14px;
+            line-height: 1.5;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideInLeft 0.4s ease backwards;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .list-item:hover, .product-card:hover {
+            border-color: #4a1d8f;
+            box-shadow: 0 15px 35px rgba(74, 29, 143, 0.3), 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(10px) translateY(-5px) rotateY(5deg) scale(1.03);
+        }
+
+        /* Efeito de glitch no título */
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: titleGlow 3s ease-in-out infinite, glitch 5s infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            25% {
+                text-shadow: -2px 0 #4a1d8f, 2px 0 #8b5cf6;
+            }
+            50% {
+                text-shadow: 2px 0 #4a1d8f, -2px 0 #8b5cf6;
+            }
+            75% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), -1px 0 #4a1d8f;
+            }
+        }
+
+        /* Efeito de matrix rain nos inputs */
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4a1d8f;
+            box-shadow: 0 0 0 3px rgba(74, 29, 143, 0.2), 0 0 20px rgba(74, 29, 143, 0.4);
+            transform: scale(1.02);
+            animation: matrixPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes matrixPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 3px rgba(74, 29, 143, 0.2), 0 0 20px rgba(74, 29, 143, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3), 0 0 30px rgba(139, 92, 246, 0.6);
+            }
+        }
+
+        /* Efeito de holograma nas abas */
+        .tab-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .tab-button:hover::before {
+            left: 100%;
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 25px rgba(255, 255, 255, 0.3), 0 0 30px rgba(74, 29, 143, 0.4);
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #4a1d8f;
+            transform: scale(1.1);
+            box-shadow: 0 5px 30px rgba(255, 255, 255, 0.4), 0 0 40px rgba(74, 29, 143, 0.5);
+        }
+
+        /* Efeito de loading avançado */
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.1);
+            border-top: 6px solid #4a1d8f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite, pulseGlow 2s ease-in-out infinite, morphing 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .loading-spinner::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border: 2px solid transparent;
+            border-top: 2px solid #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite reverse;
+        }
+
+        @keyframes morphing {
+            0%, 100% {
+                border-radius: 50%;
+                transform: scale(1);
+            }
+            25% {
+                border-radius: 45%;
+                transform: scale(1.05);
+            }
+            50% {
+                border-radius: 40%;
+                transform: scale(0.95);
+            }
+            75% {
+                border-radius: 45%;
+                transform: scale(1.05);
+            }
+        }
+
+        /* Efeito de typing animation */
+        .typing-effect {
+            overflow: hidden;
+            border-right: 3px solid #4a1d8f;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #4a1d8f; }
+        }
+
+        /* Efeito de onda no background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(74, 29, 143, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(74, 29, 143, 0.2) 0%, transparent 50%);
+            animation: wave 10s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes wave {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(-20px, -20px) scale(1.1);
+            }
+            66% {
+                transform: translate(20px, -10px) scale(0.9);
+            }
+        }
+
+        /* Efeito de sparkles */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Efeito de neon glow nas mensagens */
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            animation: bounceIn 0.5s ease, neonGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes neonGlow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(74, 29, 143, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(74, 29, 143, 0.8), 0 0 30px rgba(139, 92, 246, 0.4);
+            }
+        }
+        @media (max-width: 768px) {
+            .tab-button:hover {
+                transform: translateY(-2px) scale(1.02);
+            }
+            
+            .btn:hover {
+                transform: translateY(-2px) scale(1.02);
+            }
+            
+            .product-card:hover {
+                transform: translateY(-3px) scale(1.02);
             }
         }
 
@@ -510,7 +1497,7 @@
         }
 
         .product-card:hover {
-            border-color: #667eea;
+            border-color: #4a1d8f;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
@@ -527,7 +1514,7 @@
         }
 
         .product-price {
-            color: #667eea;
+            color: #4a1d8f;
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 8px;
@@ -550,9 +1537,9 @@
         .quantity-btn {
             width: 30px;
             height: 30px;
-            border: 1px solid #667eea;
+            border: 1px solid #4a1d8f;
             background: white;
-            color: #667eea;
+            color: #4a1d8f;
             border-radius: 50%;
             cursor: pointer;
             font-size: 16px;
@@ -560,7 +1547,7 @@
         }
 
         .quantity-btn:hover {
-            background: #667eea;
+            background: #4a1d8f;
             color: white;
         }
 
@@ -602,7 +1589,7 @@
         }
 
         .cart-item-price {
-            color: #667eea;
+            color: #4a1d8f;
             font-weight: bold;
         }
 
@@ -624,7 +1611,7 @@
         }
 
         .cart-summary {
-            border-top: 2px solid #667eea;
+            border-top: 2px solid #4a1d8f;
             padding-top: 15px;
             margin-top: 15px;
         }
@@ -640,7 +1627,7 @@
         }
 
         .cart-total-amount {
-            color: #667eea;
+            color: #4a1d8f;
             font-size: 24px;
         }
 
@@ -650,7 +1637,7 @@
         }
 
         .btn-success {
-            background: #28a745;
+            background: #4a1d8f;
         }
 
         .btn-success:hover {
@@ -713,9 +1700,22 @@
     </style>
 </head>
 <body>
+    <!-- Partículas flutuantes -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
     <div class="container">
         <header>
-            <h1>📋 Sistema de Cadastro</h1>
+            <h1 class="floating">📋 Sistema de Cadastro</h1>
             <p>Gerencie usuários, clientes e produtos</p>
             <div id="userInfo" style="display: none; text-align: right; padding: 10px 20px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 20px;">
                 <span style="margin-right: 15px; color: #333;">👤 <span id="userName"></span></span>
@@ -941,7 +1941,7 @@
                 
                 <!-- Seção do Carrinho -->
                 <div class="cart-section">
-                    <h3>🛒 Carrinho de Compras <span class="cart-badge" id="cartBadge" style="display: none;">0</span></h3>
+                    <h3>🛒 Carrinho de Compras <span class="cart-badge floating" id="cartBadge" style="display: none;">0</span></h3>
                     
                     <div class="cart-items" id="cartItems">
                         <div class="empty-cart">
@@ -1447,6 +2447,88 @@
                 showMessage('Compra finalizada com sucesso!', 'success');
             }, 2000);
         }
+
+        // Função para criar sparkles aleatórios
+        function createSparkle(element) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            element.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+
+        // Adicionar sparkles aos botões em hover
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    for (let i = 0; i < 3; i++) {
+                        setTimeout(() => createSparkle(btn), i * 200);
+                    }
+                });
+            });
+
+            // Adicionar efeito de typing ao título
+            const title = document.querySelector('header h1');
+            if (title) {
+                title.classList.add('typing-effect');
+                setTimeout(() => {
+                    title.classList.remove('typing-effect');
+                }, 3000);
+            }
+
+            // Criar sparkles periódicos no header
+            setInterval(() => {
+                const header = document.querySelector('header');
+                if (header) {
+                    createSparkle(header);
+                }
+            }, 3000);
+        });
+
+        // Efeito de onda no mouse move
+        document.addEventListener('mousemove', (e) => {
+            const wave = document.createElement('div');
+            wave.style.position = 'fixed';
+            wave.style.left = e.clientX + 'px';
+            wave.style.top = e.clientY + 'px';
+            wave.style.width = '10px';
+            wave.style.height = '10px';
+            wave.style.background = 'radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)';
+            wave.style.borderRadius = '50%';
+            wave.style.pointerEvents = 'none';
+            wave.style.transform = 'translate(-50%, -50%)';
+            wave.style.animation = 'ripple 1s ease-out';
+            wave.style.zIndex = '9998';
+            document.body.appendChild(wave);
+            
+            setTimeout(() => {
+                wave.remove();
+            }, 1000);
+        });
+
+        // Adicionar animação de ripple
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                0% {
+                    width: 10px;
+                    height: 10px;
+                    opacity: 1;
+                }
+                100% {
+                    width: 50px;
+                    height: 50px;
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
 
         // Login
         document.getElementById('loginForm').addEventListener('submit', async (e) => {

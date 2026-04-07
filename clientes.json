@@ -22,5 +22,13 @@
     "endereco": "qwehjk",
     "bairro": "asdfghjklç",
     "contato": "2347543214"
+  },
+  {
+    "cpf": "12345678900",
+    "nome": "kamylle",
+    "idade": 16,
+    "endereco": "rua ",
+    "bairro": "campo city",
+    "contato": "471523584"
   }
 ]
