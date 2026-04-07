@@ -1,12 +1,15 @@
 const express = require('express'); 
 const fs = require('fs'); 
 const path = require('path'); 
-//const cors = require('cors'); 
+const cors = require('cors'); 
 
 const app = express();
 const port = 3000;
-//app.use(cors());
+app.use(cors());
 app.use(express.json());
+
+// Servir arquivos estáticos da pasta public
+app.use(express.static(path.join(__dirname, 'public')));
 
 // --- CONFIGURAÇÃO DE ARQUIVOS ---
 const clientesFile = path.join(__dirname, 'clientes.json');
@@ -55,6 +58,14 @@ app.post('/usuarios', (req, res) => {
         return res.status(400).json({ error: 'Código, Nome, Email e Senha são obrigatórios' });
     }
 
+    // Validação do formato da senha
+    const senhaRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!senhaRegex.test(senha)) {
+        return res.status(400).json({ 
+            error: 'A senha deve ter no mínimo 8 caracteres, incluindo 1 letra maiúscula, 1 número e 1 caractere especial (@$!%*?&)' 
+        });
+    }
+
     const usuarios = lerUsuarios();
 
     // Verifica se o código ou email já existem
@@ -80,6 +91,15 @@ app.get("/usuarios", (req, res) => {
     const usuarios = lerUsuarios();
     // Mapeamos para não enviar a senha no GET geral
     const listaSegura = usuarios.map(({ senha, ...resto }) => resto);
+    res.status(200).json(listaSegura);
+});
+
+app.get("/usuarios/ordenados", (req, res) => {
+    const usuarios = lerUsuarios();
+    // Mapeamos para não enviar a senha e ordenamos por nome
+    const listaSegura = usuarios
+        .map(({ senha, ...resto }) => resto)
+        .sort((a, b) => a.nome.localeCompare(b.nome));
     res.status(200).json(listaSegura);
 });
 
@@ -130,6 +150,13 @@ app.get("/produtos", (req, res) => {
     res.status(200).json(produtos);
 });
 
+app.get("/produtos/ordenados", (req, res) => {
+    const produtos = lerProdutos();
+    // Ordenar por nome
+    const produtosOrdenados = produtos.sort((a, b) => a.nome.localeCompare(b.nome));
+    res.status(200).json(produtosOrdenados);
+});
+
 app.get("/produtos/:id", (req, res) => {
     const { id } = req.params;
     const produtos = lerProdutos();
@@ -164,6 +191,13 @@ app.post('/clientes', (req, res) => {
 app.get("/clientes", (req, res) => {
     const clientes = lerClientes();
     res.status(200).json(clientes);
+});
+
+app.get("/clientes/ordenados", (req, res) => {
+    const clientes = lerClientes();
+    // Ordenar por nome
+    const clientesOrdenados = clientes.sort((a, b) => a.nome.localeCompare(b.nome));
+    res.status(200).json(clientesOrdenados);
 });
 
 app.get("/clientes/:cpf", (req, res) => {

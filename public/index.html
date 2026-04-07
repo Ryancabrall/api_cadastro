@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Cadastro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tab-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .sort-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 4px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .sort-btn {
+            background: transparent;
+            color: #666;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .sort-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .sort-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .settings-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+        }
+
+        .settings-btn:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+            padding: 5px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .setting-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .setting-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .list-container {
+            margin-top: 30px;
+        }
+
+        .list-item {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 14px;
+            line-height: 1.5;
+            transition: all 0.2s ease;
+        }
+
+        .list-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+
+        .search-box input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Sistema de Cadastro</h1>
+            <p>Gerencie usuários, clientes e produtos</p>
+            <div id="userInfo" style="display: none; text-align: right; padding: 10px 20px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 20px;">
+                <span style="margin-right: 15px; color: #333;">👤 <span id="userName"></span></span>
+                <button class="settings-btn" onclick="toggleSettings()" title="Configurações">⚙️</button>
+                <button class="logout-btn" onclick="logout()" title="Sair">🚪</button>
+            </div>
+        </header>
+
+        <div class="tabs" id="mainTabs" style="display: none;">
+            <button class="tab-button active" onclick="showTab('usuarios')">👤 Usuários</button>
+            <button class="tab-button" onclick="showTab('clientes')">👥 Clientes</button>
+            <button class="tab-button" onclick="showTab('produtos')">📦 Produtos</button>
+            <button class="tab-button" onclick="showTab('login')">🔐 Login</button>
+        </div>
+
+        <!-- Tela Inicial (Login e Cadastro) -->
+        <div id="telaInicial" class="tab-content active">
+            <!-- Botões de alternância -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="display: inline-flex; background: rgba(255, 255, 255, 0.1); border-radius: 25px; padding: 4px; backdrop-filter: blur(10px);">
+                    <button class="btn" id="btnMostrarLogin" onclick="mostrarApenasLogin()" style="margin: 0; border-radius: 20px; padding: 10px 25px;">🔐 Login</button>
+                    <button class="btn btn-secondary" id="btnMostrarCadastro" onclick="mostrarApenasCadastro()" style="margin: 0; border-radius: 20px; padding: 10px 25px;">👤 Cadastrar</button>
+                </div>
+            </div>
+
+            <div id="containerFormularios" style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+                <!-- Login -->
+                <div id="painelLogin">
+                    <h2>🔐 Login</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email:</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginSenha">Senha:</label>
+                            <input type="password" id="loginSenha" required>
+                        </div>
+                        <button type="submit" class="btn">Entrar</button>
+                    </form>
+                </div>
+
+                <!-- Cadastro -->
+                <div id="painelCadastro" style="display: none;">
+                    <h2>👤 Cadastrar Usuário</h2>
+                    <form id="usuarioForm">
+                        <div class="form-group">
+                            <label for="usuarioCodigo">Código:</label>
+                            <input type="text" id="usuarioCodigo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="usuarioNome">Nome:</label>
+                            <input type="text" id="usuarioNome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="usuarioEmail">Email:</label>
+                            <input type="email" id="usuarioEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="usuarioSenha">Senha:</label>
+                            <input type="password" id="usuarioSenha" required pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" 
+                                   title="A senha deve ter no mínimo 8 caracteres, incluindo 1 letra maiúscula, 1 número e 1 caractere especial (@$!%*?&)">
+                            <small style="color: #666; font-size: 12px;">Mínimo 8 caracteres: 1 maiúscula, 1 número, 1 especial (@$!%*?&)</small>
+                        </div>
+                        <button type="submit" class="btn">Cadastrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensagens -->
+        <div id="messageContainer"></div>
+
+        <!-- Modal de Configurações -->
+        <div id="settingsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>⚙️ Configurações</h3>
+                    <button class="close-btn" onclick="toggleSettings()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label for="languageSelect">🌐 Idioma / Language:</label>
+                        <select id="languageSelect" onchange="changeLanguage(this.value)">
+                            <option value="pt">🇧🇷 Português</option>
+                            <option value="en">🇺🇸 English</option>
+                            <option value="es">🇪🇸 Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Usuários (Listagem) -->
+        <div id="usuarios" class="tab-content">
+            <div class="list-container">
+                <h3>Usuários</h3>
+                <div class="sort-buttons">
+                    <button class="sort-btn active" onclick="listarUsuarios()">Todos</button>
+                    <button class="sort-btn" onclick="listarUsuariosOrdenados('nome')">A-Z</button>
+                    <button class="sort-btn" onclick="listarUsuariosOrdenados('codigo')">Código</button>
+                    <button class="sort-btn" onclick="listarUsuariosOrdenados('email')">Email</button>
+                </div>
+                <div id="usuariosList"></div>
+            </div>
+        </div>
+
+        <!-- Tab Clientes -->
+        <div id="clientes" class="tab-content">
+            <h2>Clientes</h2>
+            <form id="clienteForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clienteCpf">CPF:</label>
+                        <input type="text" id="clienteCpf" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clienteNome">Nome:</label>
+                        <input type="text" id="clienteNome" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clienteIdade">Idade:</label>
+                        <input type="number" id="clienteIdade" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clienteContato">Contato:</label>
+                        <input type="text" id="clienteContato" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="clienteEndereco">Endereço:</label>
+                    <input type="text" id="clienteEndereco" required>
+                </div>
+                <div class="form-group">
+                    <label for="clienteBairro">Bairro:</label>
+                    <input type="text" id="clienteBairro" required>
+                </div>
+                <button type="submit" class="btn">Cadastrar</button>
+            </form>
+
+            <div class="list-container">
+                <h3>Lista de Clientes</h3>
+                <div class="sort-buttons">
+                    <button class="sort-btn active" onclick="listarClientes()">Todos</button>
+                    <button class="sort-btn" onclick="listarClientesOrdenados('nome')">A-Z</button>
+                    <button class="sort-btn" onclick="listarClientesOrdenados('cpf')">CPF</button>
+                    <button class="sort-btn" onclick="listarClientesOrdenados('idade')">Idade</button>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="searchCliente" placeholder="Buscar CPF..." onkeyup="searchCliente()">
+                </div>
+                <div id="clientesList"></div>
+            </div>
+        </div>
+
+        <!-- Tab Produtos -->
+        <div id="produtos" class="tab-content">
+            <h2>Produtos</h2>
+            <form id="produtoForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="produtoId">ID:</label>
+                        <input type="text" id="produtoId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoNome">Nome:</label>
+                        <input type="text" id="produtoNome" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="produtoPreco">Preço:</label>
+                        <input type="number" id="produtoPreco" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoEstoque">Estoque:</label>
+                        <input type="number" id="produtoEstoque" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Cadastrar</button>
+            </form>
+
+            <div class="list-container">
+                <h3>Lista de Produtos</h3>
+                <div class="sort-buttons">
+                    <button class="sort-btn active" onclick="listarProdutos()">Todos</button>
+                    <button class="sort-btn" onclick="listarProdutosOrdenados('nome')">A-Z</button>
+                    <button class="sort-btn" onclick="listarProdutosOrdenados('preco')">Preço</button>
+                    <button class="sort-btn" onclick="listarProdutosOrdenados('estoque')">Estoque</button>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="searchProduto" placeholder="Buscar ID..." onkeyup="searchProduto()">
+                </div>
+                <div id="produtosList"></div>
+            </div>
+        </div>
+
+        <!-- Tab Login -->
+        <div id="login" class="tab-content">
+            <h2>Login do Sistema</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginSenha">Senha:</label>
+                    <input type="password" id="loginSenha" required>
+                </div>
+                <button type="submit" class="btn">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        let usuarioLogado = null;
+
+        // Verificar se usuário já está logado ao carregar a página
+        window.addEventListener('load', () => {
+            const usuarioSalvo = localStorage.getItem('usuarioLogado');
+            if (usuarioSalvo) {
+                usuarioLogado = JSON.parse(usuarioSalvo);
+                mostrarInterfacePrincipal();
+            }
+            
+            // Carregar idioma salvo
+            const savedLanguage = localStorage.getItem('language') || 'pt';
+            currentLanguage = savedLanguage;
+            document.getElementById('languageSelect').value = savedLanguage;
+            updateInterfaceLanguage(savedLanguage);
+        });
+
+        // Funções de alternância de visualização
+        function mostrarApenasLogin() {
+            document.getElementById('painelLogin').style.display = 'block';
+            document.getElementById('painelCadastro').style.display = 'none';
+            document.getElementById('containerFormularios').style.gridTemplateColumns = '1fr';
+            
+            // Atualizar botões com estilo toggle
+            document.getElementById('btnMostrarLogin').className = 'btn';
+            document.getElementById('btnMostrarCadastro').className = 'btn btn-secondary';
+        }
+
+        function mostrarApenasCadastro() {
+            document.getElementById('painelLogin').style.display = 'none';
+            document.getElementById('painelCadastro').style.display = 'block';
+            document.getElementById('containerFormularios').style.gridTemplateColumns = '1fr';
+            
+            // Atualizar botões com estilo toggle
+            document.getElementById('btnMostrarLogin').className = 'btn btn-secondary';
+            document.getElementById('btnMostrarCadastro').className = 'btn';
+        }
+
+        // Configurações e Idioma
+        const translations = {
+            pt: {
+                title: "📋 Sistema de Cadastro",
+                subtitle: "Gerencie usuários, clientes e produtos",
+                users: "Usuários",
+                clients: "Clientes", 
+                products: "Produtos",
+                login: "Login",
+                register: "Cadastrar",
+                all: "Todos",
+                sortByName: "A-Z",
+                sortByCode: "Código",
+                sortByEmail: "Email",
+                sortByPrice: "Preço",
+                sortByStock: "Estoque",
+                search: "Buscar",
+                settings: "Configurações",
+                language: "Idioma",
+                logout: "Sair"
+            },
+            en: {
+                title: "📋 Registration System",
+                subtitle: "Manage users, clients and products",
+                users: "Users",
+                clients: "Clients",
+                products: "Products", 
+                login: "Login",
+                register: "Register",
+                all: "All",
+                sortByName: "A-Z",
+                sortByCode: "Code",
+                sortByEmail: "Email",
+                sortByPrice: "Price",
+                sortByStock: "Stock",
+                search: "Search",
+                settings: "Settings",
+                language: "Language",
+                logout: "Logout"
+            },
+            es: {
+                title: "📋 Sistema de Registro",
+                subtitle: "Gestiona usuarios, clientes y productos",
+                users: "Usuarios",
+                clients: "Clientes",
+                products: "Productos",
+                login: "Inicio",
+                register: "Registrar", 
+                all: "Todos",
+                sortByName: "A-Z",
+                sortByCode: "Código",
+                sortByEmail: "Email",
+                sortByPrice: "Precio",
+                sortByStock: "Stock",
+                search: "Buscar",
+                settings: "Configuración",
+                language: "Idioma",
+                logout: "Salir"
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('language') || 'pt';
+
+        function toggleSettings() {
+            const modal = document.getElementById('settingsModal');
+            modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            updateInterfaceLanguage(lang);
+            showMessage(translations[lang].settings + ' atualizadas', 'success');
+        }
+
+        function updateInterfaceLanguage(lang) {
+            const t = translations[lang];
+            
+            // Atualizar título e subtítulo
+            document.querySelector('header h1').textContent = t.title;
+            document.querySelector('header p').textContent = t.subtitle;
+            
+            // Atualizar abas
+            document.querySelector('[onclick="showTab(\'usuarios\')"]').textContent = `👤 ${t.users}`;
+            document.querySelector('[onclick="showTab(\'clientes\')"]').textContent = `👥 ${t.clients}`;
+            document.querySelector('[onclick="showTab(\'produtos\')"]').textContent = `📦 ${t.products}`;
+            document.querySelector('[onclick="showTab(\'login\')"]').textContent = `🔐 ${t.login}`;
+            
+            // Atualizar botões de ordenação
+            document.querySelectorAll('.sort-btn').forEach(btn => {
+                if (btn.textContent.includes('Todos') || btn.textContent.includes('All')) {
+                    btn.textContent = t.all;
+                }
+            });
+            
+            // Atualizar placeholders
+            document.getElementById('searchCliente').placeholder = `${t.search} CPF...`;
+            document.getElementById('searchProduto').placeholder = `${t.search} ID...`;
+            
+            // Atualizar botões de cadastro
+            document.querySelectorAll('button[type="submit"]').forEach(btn => {
+                if (btn.textContent.includes('Cadastrar')) {
+                    btn.textContent = t.register;
+                }
+            });
+        }
+
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('settingsModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Funções de navegação e controle de acesso
+        function showTab(tabName) {
+            // Só permitir navegação se estiver logado
+            if (!usuarioLogado && tabName !== 'telaInicial') {
+                showMessage('Faça login para acessar esta funcionalidade', 'error');
+                return;
+            }
+
+            // Esconder todas as tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Mostrar a tab selecionada
+            document.getElementById(tabName).classList.add('active');
+            
+            // Ativar o botão correspondente
+            const activeButton = document.querySelector(`[onclick="showTab('${tabName}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+
+        function mostrarInterfacePrincipal() {
+            // Esconder a tela inicial
+            document.getElementById('telaInicial').classList.remove('active');
+            // Mostrar as abas principais
+            document.getElementById('mainTabs').style.display = 'flex';
+            // Mostrar informações do usuário
+            document.getElementById('userInfo').style.display = 'block';
+            document.getElementById('userName').textContent = usuarioLogado.nome;
+            // Mostrar a primeira aba (usuários)
+            showTab('usuarios');
+            // Carregar dados iniciais
+            listarUsuarios();
+            listarClientes();
+            listarProdutos();
+        }
+
+        function backToLogin() {
+            // Esconder todas as tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Mostrar apenas a tela inicial
+            document.getElementById('telaInicial').classList.add('active');
+        }
+
+        // Função de logout
+        function logout() {
+            usuarioLogado = null;
+            localStorage.removeItem('usuarioLogado');
+            document.getElementById('mainTabs').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'none';
+            backToLogin();
+            showMessage('Logout realizado com sucesso', 'success');
+        }
+
+        // Função de mensagens
+        function showMessage(message, type = 'success') {
+            const messageContainer = document.getElementById('messageContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            messageContainer.appendChild(messageDiv);
+
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const login = {
+                email: document.getElementById('loginEmail').value,
+                senha: document.getElementById('loginSenha').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(login)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.mensagem, 'success');
+                    usuarioLogado = data.usuario;
+                    localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+                    mostrarInterfacePrincipal();
+                    document.getElementById('loginForm').reset();
+                } else {
+                    showMessage(data.error || 'Erro ao fazer login', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão com o servidor', 'error');
+            }
+        });
+
+        // Usuários
+        document.getElementById('usuarioForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const usuario = {
+                codigo: document.getElementById('usuarioCodigo').value,
+                nome: document.getElementById('usuarioNome').value,
+                email: document.getElementById('usuarioEmail').value,
+                senha: document.getElementById('usuarioSenha').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/usuarios`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(usuario)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.mensagem, 'success');
+                    document.getElementById('usuarioForm').reset();
+                } else {
+                    showMessage(data.error || 'Erro ao cadastrar usuário', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão com o servidor', 'error');
+            }
+        });
+
+        async function listarUsuarios() {
+            try {
+                const response = await fetch(`${API_BASE}/usuarios`);
+                const usuarios = await response.json();
+
+                const usuariosList = document.getElementById('usuariosList');
+                usuariosList.innerHTML = '';
+
+                usuarios.forEach(usuario => {
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <strong>Código:</strong> ${usuario.codigo} | 
+                        <strong>Nome:</strong> ${usuario.nome} | 
+                        <strong>Email:</strong> ${usuario.email}
+                    `;
+                    usuariosList.appendChild(item);
+                });
+            } catch (error) {
+                showMessage('Erro ao listar usuários', 'error');
+            }
+        }
+
+        async function listarUsuariosOrdenados(campo = 'nome', ordem = 'asc') {
+            try {
+                const response = await fetch(`${API_BASE}/usuarios`);
+                const usuarios = await response.json();
+
+                // Ordenar dinamicamente
+                const usuariosOrdenados = usuarios.sort((a, b) => {
+                    let valorA = a[campo];
+                    let valorB = b[campo];
+                    
+                    // Para campos numéricos
+                    if (campo === 'codigo') {
+                        valorA = String(valorA).toLowerCase();
+                        valorB = String(valorB).toLowerCase();
+                    }
+                    
+                    // Para campos de texto
+                    if (typeof valorA === 'string') {
+                        valorA = valorA.toLowerCase();
+                        valorB = valorB.toLowerCase();
+                    }
+                    
+                    if (ordem === 'desc') {
+                        if (valorA > valorB) return -1;
+                        if (valorA < valorB) return 1;
+                        return 0;
+                    } else {
+                        if (valorA < valorB) return -1;
+                        if (valorA > valorB) return 1;
+                        return 0;
+                    }
+                });
+
+                const usuariosList = document.getElementById('usuariosList');
+                usuariosList.innerHTML = '';
+
+                usuarios.forEach((usuario, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <strong>${index + 1}.</strong> 
+                        <strong>Código:</strong> ${usuario.codigo} | 
+                        <strong>Nome:</strong> ${usuario.nome} | 
+                        <strong>Email:</strong> ${usuario.email}
+                    `;
+                    usuariosList.appendChild(item);
+                });
+            } catch (error) {
+                showMessage('Erro ao listar usuários ordenados', 'error');
+            }
+        }
+
+        // Clientes
+        document.getElementById('clienteForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const cliente = {
+                cpf: document.getElementById('clienteCpf').value,
+                nome: document.getElementById('clienteNome').value,
+                idade: parseInt(document.getElementById('clienteIdade').value),
+                endereco: document.getElementById('clienteEndereco').value,
+                bairro: document.getElementById('clienteBairro').value,
+                contato: document.getElementById('clienteContato').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/clientes`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(cliente)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.mensagem, 'success');
+                    document.getElementById('clienteForm').reset();
+                    listarClientes();
+                } else {
+                    showMessage(data.error || 'Erro ao cadastrar cliente', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão com o servidor', 'error');
+            }
+        });
+
+        async function listarClientes() {
+            try {
+                const response = await fetch(`${API_BASE}/clientes`);
+                const clientes = await response.json();
+
+                const clientesList = document.getElementById('clientesList');
+                clientesList.innerHTML = '';
+
+                clientes.forEach(cliente => {
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <strong>CPF:</strong> ${cliente.cpf} | 
+                        <strong>Nome:</strong> ${cliente.nome} | 
+                        <strong>Idade:</strong> ${cliente.idade} | 
+                        <strong>Endereço:</strong> ${cliente.endereco}, ${cliente.bairro} | 
+                        <strong>Contato:</strong> ${cliente.contato}
+                    `;
+                    clientesList.appendChild(item);
+                });
+            } catch (error) {
+                showMessage('Erro ao listar clientes', 'error');
+            }
+        }
+
+        async function listarClientesOrdenados(campo = 'nome', ordem = 'asc') {
+            try {
+                const response = await fetch(`${API_BASE}/clientes`);
+                const clientes = await response.json();
+
+                // Ordenar dinamicamente
+                const clientesOrdenados = clientes.sort((a, b) => {
+                    let valorA = a[campo];
+                    let valorB = b[campo];
+                    
+                    // Para campos numéricos
+                    if (campo === 'idade') {
+                        valorA = Number(valorA);
+                        valorB = Number(valorB);
+                    }
+                    
+                    // Para campos de texto
+                    if (typeof valorA === 'string') {
+                        valorA = valorA.toLowerCase();
+                        valorB = valorB.toLowerCase();
+                    }
+                    
+                    if (ordem === 'desc') {
+                        if (valorA > valorB) return -1;
+                        if (valorA < valorB) return 1;
+                        return 0;
+                    } else {
+                        if (valorA < valorB) return -1;
+                        if (valorA > valorB) return 1;
+                        return 0;
+                    }
+                });
+
+                const clientesList = document.getElementById('clientesList');
+                clientesList.innerHTML = '';
+
+                clientes.forEach((cliente, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <strong>${index + 1}.</strong> 
+                        <strong>CPF:</strong> ${cliente.cpf} | 
+                        <strong>Nome:</strong> ${cliente.nome} | 
+                        <strong>Idade:</strong> ${cliente.idade} | 
+                        <strong>Endereço:</strong> ${cliente.endereco}, ${cliente.bairro} | 
+                        <strong>Contato:</strong> ${cliente.contato}
+                    `;
+                    clientesList.appendChild(item);
+                });
+            } catch (error) {
+                showMessage('Erro ao listar clientes ordenados', 'error');
+            }
+        }
+
+        async function searchCliente() {
+            const cpf = document.getElementById('searchCliente').value.trim();
+            if (!cpf) {
+                listarClientes();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/clientes/${cpf}`);
+                const clientesList = document.getElementById('clientesList');
+                clientesList.innerHTML = '';
+
+                if (response.ok) {
+                    const cliente = await response.json();
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <strong>CPF:</strong> ${cliente.cpf} | 
+                        <strong>Nome:</strong> ${cliente.nome} | 
+                        <strong>Idade:</strong> ${cliente.idade} | 
+                        <strong>Endereço:</strong> ${cliente.endereco}, ${cliente.bairro} | 
+                        <strong>Contato:</strong> ${cliente.contato}
+                    `;
+                    clientesList.appendChild(item);
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    clientesList.innerHTML = `<p style="color: #666; text-align: center; padding: 20px;">${errorData.error || 'Cliente não encontrado'}</p>`;
+                }
+            } catch (error) {
+                showMessage('Erro ao buscar cliente', 'error');
+                console.error('Erro na busca:', error);
+            }
+        }
+
+        // Produtos
+        document.getElementById('produtoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const produto = {
+                id: document.getElementById('produtoId').value,
+                nome: document.getElementById('produtoNome').value,
+                preco: parseFloat(document.getElementById('produtoPreco').value),
+                estoque: parseInt(document.getElementById('produtoEstoque').value)
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/produtos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(produto)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.mensagem, 'success');
+                    document.getElementById('produtoForm').reset();
+                    listarProdutos();
+                } else {
+                    showMessage(data.error || 'Erro ao cadastrar produto', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão com o servidor', 'error');
+            }
+        });
+
+        async function listarProdutos() {
+            try {
+                const response = await fetch(`${API_BASE}/produtos`);
+                const produtos = await response.json();
+
+                const produtosList = document.getElementById('produtosList');
+                produtosList.innerHTML = '';
+
+                produtos.forEach(produto => {
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <strong>ID:</strong> ${produto.id} | 
+                        <strong>Nome:</strong> ${produto.nome} | 
+                        <strong>Preço:</strong> R$ ${produto.preco.toFixed(2)} | 
+                        <strong>Estoque:</strong> ${produto.estoque}
+                    `;
+                    produtosList.appendChild(item);
+                });
+            } catch (error) {
+                showMessage('Erro ao listar produtos', 'error');
+            }
+        }
+
+        async function listarProdutosOrdenados(campo = 'nome', ordem = 'asc') {
+            try {
+                const response = await fetch(`${API_BASE}/produtos`);
+                const produtos = await response.json();
+
+                // Ordenar dinamicamente
+                const produtosOrdenados = produtos.sort((a, b) => {
+                    let valorA = a[campo];
+                    let valorB = b[campo];
+                    
+                    // Para campos numéricos
+                    if (campo === 'preco' || campo === 'estoque') {
+                        valorA = Number(valorA);
+                        valorB = Number(valorB);
+                    }
+                    
+                    // Para campos de texto
+                    if (typeof valorA === 'string') {
+                        valorA = valorA.toLowerCase();
+                        valorB = valorB.toLowerCase();
+                    }
+                    
+                    if (ordem === 'desc') {
+                        if (valorA > valorB) return -1;
+                        if (valorA < valorB) return 1;
+                        return 0;
+                    } else {
+                        if (valorA < valorB) return -1;
+                        if (valorA > valorB) return 1;
+                        return 0;
+                    }
+                });
+
+                const produtosList = document.getElementById('produtosList');
+                produtosList.innerHTML = '';
+
+                produtos.forEach((produto, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <strong>${index + 1}.</strong> 
+                        <strong>ID:</strong> ${produto.id} | 
+                        <strong>Nome:</strong> ${produto.nome} | 
+                        <strong>Preço:</strong> R$ ${produto.preco.toFixed(2)} | 
+                        <strong>Estoque:</strong> ${produto.estoque}
+                    `;
+                    produtosList.appendChild(item);
+                });
+            } catch (error) {
+                showMessage('Erro ao listar produtos ordenados', 'error');
+            }
+        }
+
+        async function searchProduto() {
+            const id = document.getElementById('searchProduto').value.trim();
+            if (!id) {
+                listarProdutos();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/produtos/${id}`);
+                const produtosList = document.getElementById('produtosList');
+                produtosList.innerHTML = '';
+
+                if (response.ok) {
+                    const produto = await response.json();
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `
+                        <strong>ID:</strong> ${produto.id} | 
+                        <strong>Nome:</strong> ${produto.nome} | 
+                        <strong>Preço:</strong> R$ ${produto.preco.toFixed(2)} | 
+                        <strong>Estoque:</strong> ${produto.estoque}
+                    `;
+                    produtosList.appendChild(item);
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    produtosList.innerHTML = `<p style="color: #666; text-align: center; padding: 20px;">${errorData.error || 'Produto não encontrado'}</p>`;
+                }
+            } catch (error) {
+                showMessage('Erro ao buscar produto', 'error');
+                console.error('Erro na busca:', error);
+            }
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const login = {
+                email: document.getElementById('loginEmail').value,
+                senha: document.getElementById('loginSenha').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(login)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.mensagem, 'success');
+                    document.getElementById('loginForm').reset();
+                    // Armazenar usuário logado (opcional)
+                    localStorage.setItem('usuarioLogado', JSON.stringify(data.usuario));
+                } else {
+                    showMessage(data.error || 'Erro ao fazer login', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão com o servidor', 'error');
+            }
+        });
+
+        </script>
+</body>
+</html>

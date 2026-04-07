@@ -10,5 +10,11 @@
     "nome": "Ryan",
     "email": "ryan@gmail.com",
     "senha": "123456"
+  },
+  {
+    "codigo": "22",
+    "nome": "cleverson",
+    "email": "cleverson@gmail.foralula",
+    "senha": "123456"
   }
 ]

@@ -6,6 +6,13 @@
     "endereco": "bateias",
     "bairro": "bateias",
     "contato": 4199423808
+  },
+  {
+    "cpf": "159.740.629-57",
+    "nome": "andre",
+    "idade": 24,
+    "endereco": "parana",
+    "bairro": "bateias",
+    "contato": "5541999423893"
   }
-  
 ]

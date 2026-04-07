@@ -4,5 +4,11 @@
     "nome": "Teclado Mecânico",
     "preco": 250,
     "estoque": 15
+  },
+  {
+    "id": "102",
+    "nome": "controle ps4",
+    "preco": 130,
+    "estoque": 200
   }
 ]
