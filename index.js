@@ -5,7 +5,11 @@ const cors = require('cors');
 
 const app = express();
 const port = 3000;
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Servir arquivos estáticos da pasta public
@@ -210,6 +214,7 @@ app.get("/clientes/:cpf", (req, res) => {
     res.status(200).json(cliente);
 });
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
+    console.log(`Servidor acessível externamente em http://SEU_IP:${port}`);
 });

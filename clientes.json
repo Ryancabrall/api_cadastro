@@ -30,5 +30,13 @@
     "endereco": "rua ",
     "bairro": "campo city",
     "contato": "471523584"
+  },
+  {
+    "cpf": "12335676586897987",
+    "nome": "diva",
+    "idade": 50,
+    "endereco": "minha casa",
+    "bairro": "rua",
+    "contato": "1125790"
   }
 ]
