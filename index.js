@@ -20,64 +20,51 @@ const clientesFile = path.join(__dirname, 'clientes.json');
 const usuariosFile = path.join(__dirname, 'usuarios.json'); 
 const produtosFile = path.join(__dirname, 'produtos.json'); // Caminho para produtos
 
+// --- ARMAZENAMENTO EM MEMÓRIA PARA DEPLOY ---
+let usuarios = [];
+let clientes = [];
+let produtos = [];
+
+// Inicializar dados se existirem arquivos locais
+try {
+    if (fs.existsSync(usuariosFile)) {
+        const dados = fs.readFileSync(usuariosFile, 'utf8');
+        usuarios = JSON.parse(dados) || [];
+    }
+    if (fs.existsSync(clientesFile)) {
+        const dados = fs.readFileSync(clientesFile, 'utf8');
+        clientes = JSON.parse(dados) || [];
+    }
+    if (fs.existsSync(produtosFile)) {
+        const dados = fs.readFileSync(produtosFile, 'utf8');
+        produtos = JSON.parse(dados) || [];
+    }
+} catch (e) {
+    console.log('Inicializando com dados vazios (ambiente de deploy)');
+}
+
 // --- FUNÇÕES AUXILIARES (CLIENTES) ---
 function lerClientes() {
-    try {
-        if (!fs.existsSync(clientesFile)) return [];
-        const dados = fs.readFileSync(clientesFile, 'utf8');
-        return JSON.parse(dados) || [];
-    } catch (e) {
-        console.error('Erro ao ler clientes:', e);
-        return [];
-    }
+    return clientes;
 }
-function salvarClientes(clientes) {
-    try {
-        fs.writeFileSync(clientesFile, JSON.stringify(clientes, null, 2), 'utf-8');
-    } catch (e) {
-        console.error('Erro ao salvar clientes:', e);
-        throw e;
-    }
+function salvarClientes(novosClientes) {
+    clientes = novosClientes;
 }
 
 // --- FUNÇÕES AUXILIARES (USUÁRIOS) ---
 function lerUsuarios() {
-    try {
-        if (!fs.existsSync(usuariosFile)) return [];
-        const dados = fs.readFileSync(usuariosFile, 'utf8');
-        return JSON.parse(dados) || [];
-    } catch (e) {
-        console.error('Erro ao ler usuários:', e);
-        return [];
-    }
+    return usuarios;
 }
-function salvarUsuarios(usuarios) {
-    try {
-        fs.writeFileSync(usuariosFile, JSON.stringify(usuarios, null, 2), 'utf-8');
-    } catch (e) {
-        console.error('Erro ao salvar usuários:', e);
-        throw e;
-    }
+function salvarUsuarios(novosUsuarios) {
+    usuarios = novosUsuarios;
 }
 
 // --- FUNÇÕES AUXILIARES (PRODUTOS) ---
 function lerProdutos() {
-    try {
-        if (!fs.existsSync(produtosFile)) return [];
-        const dados = fs.readFileSync(produtosFile, 'utf8');
-        return JSON.parse(dados) || [];
-    } catch (e) {
-        console.error('Erro ao ler produtos:', e);
-        return [];
-    }
+    return produtos;
 }
-function salvarProdutos(produtos) {
-    try {
-        fs.writeFileSync(produtosFile, JSON.stringify(produtos, null, 2), 'utf-8');
-    } catch (e) {
-        console.error('Erro ao salvar produtos:', e);
-        throw e;
-    }
+function salvarProdutos(novosProdutos) {
+    produtos = novosProdutos;
 }
 
 /*
