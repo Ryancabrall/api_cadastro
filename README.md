@@ -40,9 +40,45 @@ O servidor mostrará duas URLs:
 ### 5. Acesso à interface web:
 As outras pessoas podem acessar a loja virtual em: `http://SEU_IP:3000`
 
+## Deploy em Produção
+
+### Opções de Deploy:
+
+#### 1. **Vercel** (Recomendado)
+```bash
+# Instalar Vercel CLI
+npm install -g vercel
+
+# Fazer deploy
+vercel --prod
+```
+
+#### 2. **Heroku** (Alternativa)
+```bash
+# Instalar Heroku CLI
+npm install -g heroku
+
+# Criar app
+heroku create api-cadastro-loja-virtual
+
+# Fazer deploy
+git push heroku main
+```
+
+#### 3. **Glitch** (Simples)
+- Acesse: https://glitch.com
+- Importe o projeto do GitHub
+- URL automática gerada
+
+### Arquivos de Deploy:
+- `package.json` configurado
+- `vercel.json` para Vercel
+- `app.json` para Heroku
+- `.gitignore` otimizado
+
 ## Acesso Público (Internet):
 
-### Link Público Atual:
+### Link Público Atual (LocalTunnel):
 **https://dry-owl-16.loca.lt**
 
 ### Como usar o LocalTunnel:

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Cadastro</title>
+    <title>Loja Virtual</title>
     <style>
         * {
             margin: 0;
@@ -931,16 +931,6 @@
         header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            animation: titleGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes titleGlow {
-            0%, 100% {
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            }
-            50% {
-                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-            }
         }
 
         /* Animações para background */
@@ -1216,12 +1206,10 @@
             transform: translateX(10px) translateY(-5px) rotateY(5deg) scale(1.03);
         }
 
-        /* Efeito de glitch no título */
+        /* Título sem efeitos */
         header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            animation: titleGlow 3s ease-in-out infinite, glitch 5s infinite;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         @keyframes glitch {
@@ -1715,7 +1703,7 @@
     </div>
     <div class="container">
         <header>
-            <h1 class="floating">📋 Sistema de Cadastro</h1>
+            <h1>🛒 Loja Virtual</h1>
             <p>Gerencie usuários, clientes e produtos</p>
             <div id="userInfo" style="display: none; text-align: right; padding: 10px 20px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 20px;">
                 <span style="margin-right: 15px; color: #333;">👤 <span id="userName"></span></span>
@@ -2047,8 +2035,8 @@
         // Configurações e Idioma
         const translations = {
             pt: {
-                title: "📋 Sistema de Cadastro",
-                subtitle: "Gerencie usuários, clientes e produtos",
+                title: "🛒 Loja Virtual",
+                subtitle: "Compre produtos online com facilidade",
                 users: "Usuários",
                 clients: "Clientes", 
                 products: "Produtos",
@@ -2066,8 +2054,8 @@
                 logout: "Sair"
             },
             en: {
-                title: "📋 Registration System",
-                subtitle: "Manage users, clients and products",
+                title: "🛒 Virtual Store",
+                subtitle: "Buy products online easily",
                 users: "Users",
                 clients: "Clients",
                 products: "Products", 
@@ -2085,8 +2073,8 @@
                 logout: "Logout"
             },
             es: {
-                title: "📋 Sistema de Registro",
-                subtitle: "Gestiona usuarios, clientes y productos",
+                title: "🛒 Tienda Virtual",
+                subtitle: "Compra productos online fácilmente",
                 users: "Usuarios",
                 clients: "Clientes",
                 products: "Productos",
@@ -2473,14 +2461,7 @@
                 });
             });
 
-            // Adicionar efeito de typing ao título
-            const title = document.querySelector('header h1');
-            if (title) {
-                title.classList.add('typing-effect');
-                setTimeout(() => {
-                    title.classList.remove('typing-effect');
-                }, 3000);
-            }
+            // Removido efeito de typing do título
 
             // Criar sparkles periódicos no header
             setInterval(() => {
@@ -2491,45 +2472,7 @@
             }, 3000);
         });
 
-        // Efeito de onda no mouse move
-        document.addEventListener('mousemove', (e) => {
-            const wave = document.createElement('div');
-            wave.style.position = 'fixed';
-            wave.style.left = e.clientX + 'px';
-            wave.style.top = e.clientY + 'px';
-            wave.style.width = '10px';
-            wave.style.height = '10px';
-            wave.style.background = 'radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)';
-            wave.style.borderRadius = '50%';
-            wave.style.pointerEvents = 'none';
-            wave.style.transform = 'translate(-50%, -50%)';
-            wave.style.animation = 'ripple 1s ease-out';
-            wave.style.zIndex = '9998';
-            document.body.appendChild(wave);
-            
-            setTimeout(() => {
-                wave.remove();
-            }, 1000);
-        });
-
-        // Adicionar animação de ripple
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                0% {
-                    width: 10px;
-                    height: 10px;
-                    opacity: 1;
-                }
-                100% {
-                    width: 50px;
-                    height: 50px;
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
+        
         // Login
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -3038,6 +2981,63 @@
             } catch (error) {
                 showMessage('Erro de conexão com o servidor', 'error');
             }
+        });
+
+        // Funções de máscara
+        function mascaraCPF(cpf) {
+            cpf.value = cpf.value
+                .replace(/\D/g, '') // Remove qualquer caractere não numérico
+                .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona ponto após os 3 primeiros dígitos
+                .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona ponto após os próximos 3 dígitos
+                .replace(/(\d{3})(\d{1,2})/, '$1-$2') // Adiciona traço antes dos 2 últimos dígitos
+                .replace(/(-\d{2})\d+?$/, '$1'); // Impede entrada de mais dígitos
+        }
+
+        function mascaraTelefone(telefone) {
+            telefone.value = telefone.value
+                .replace(/\D/g, '') // Remove qualquer caractere não numérico
+                .replace(/^(\d{2})(\d)/, '($1) $2') // Adiciona DDD entre parênteses
+                .replace(/(\d{5})(\d)/, '$1-$2') // Adiciona traço após os 5 dígitos
+                .replace(/(-\d{4})\d+?$/, '$1'); // Impede entrada de mais dígitos
+        }
+
+        // Aplicar máscaras quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', () => {
+            // Aplicar máscara de CPF
+            const cpfInput = document.getElementById('clienteCpf');
+            if (cpfInput) {
+                cpfInput.addEventListener('input', () => mascaraCPF(cpfInput));
+                cpfInput.addEventListener('keypress', (e) => {
+                    const charCode = (e.which) ? e.which : e.keyCode;
+                    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                cpfInput.maxLength = 14; // XXX.XXX.XXX-XX
+            }
+
+            // Aplicar máscara de telefone
+            const contatoInput = document.getElementById('clienteContato');
+            if (contatoInput) {
+                contatoInput.addEventListener('input', () => mascaraTelefone(contatoInput));
+                contatoInput.addEventListener('keypress', (e) => {
+                    const charCode = (e.which) ? e.which : e.keyCode;
+                    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                contatoInput.maxLength = 15; // (XX) XXXXX-XXXX
+            }
+
+            // Remover qualquer restrição dos campos de senha (já estão como type="password")
+            const senhaInputs = document.querySelectorAll('input[type="password"]');
+            senhaInputs.forEach(input => {
+                // Garante que não há máscara ou padrão restritivo nos campos de senha
+                input.removeAttribute('pattern');
+                input.removeAttribute('maxlength');
+            });
         });
 
         </script>

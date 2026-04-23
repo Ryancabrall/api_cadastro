@@ -1,13 +1,5 @@
 [
   {
-    "cpf": "15970426956",
-    "nome": "Ryan",
-    "idade": 17,
-    "endereco": "bateias",
-    "bairro": "bateias",
-    "contato": 4199423808
-  },
-  {
     "cpf": "159.740.629-57",
     "nome": "andre",
     "idade": 24,
@@ -32,11 +24,20 @@
     "contato": "471523584"
   },
   {
+<<<<<<< HEAD
     "cpf": "12335676586897987",
     "nome": "diva",
     "idade": 50,
     "endereco": "minha casa",
     "bairro": "rua",
     "contato": "1125790"
+=======
+    "cpf": "123564949-02",
+    "nome": "Ryan cabral",
+    "idade": 17,
+    "endereco": "pr 090",
+    "bairro": "bateias",
+    "contato": "41 99690-1229"
+>>>>>>> a005a4afb83b31d3640fa0fa7b6d5516913fdcb9
   }
 ]
