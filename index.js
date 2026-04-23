@@ -22,32 +22,62 @@ const produtosFile = path.join(__dirname, 'produtos.json'); // Caminho para prod
 
 // --- FUNÇÕES AUXILIARES (CLIENTES) ---
 function lerClientes() {
-    if (!fs.existsSync(clientesFile)) return [];
-    const dados = fs.readFileSync(clientesFile, 'utf8');
-    try { return JSON.parse(dados) || []; } catch (e) { return []; }
+    try {
+        if (!fs.existsSync(clientesFile)) return [];
+        const dados = fs.readFileSync(clientesFile, 'utf8');
+        return JSON.parse(dados) || [];
+    } catch (e) {
+        console.error('Erro ao ler clientes:', e);
+        return [];
+    }
 }
 function salvarClientes(clientes) {
-    fs.writeFileSync(clientesFile, JSON.stringify(clientes, null, 2), 'utf-8');
+    try {
+        fs.writeFileSync(clientesFile, JSON.stringify(clientes, null, 2), 'utf-8');
+    } catch (e) {
+        console.error('Erro ao salvar clientes:', e);
+        throw e;
+    }
 }
 
 // --- FUNÇÕES AUXILIARES (USUÁRIOS) ---
 function lerUsuarios() {
-    if (!fs.existsSync(usuariosFile)) return [];
-    const dados = fs.readFileSync(usuariosFile, 'utf8');
-    try { return JSON.parse(dados) || []; } catch (e) { return []; }
+    try {
+        if (!fs.existsSync(usuariosFile)) return [];
+        const dados = fs.readFileSync(usuariosFile, 'utf8');
+        return JSON.parse(dados) || [];
+    } catch (e) {
+        console.error('Erro ao ler usuários:', e);
+        return [];
+    }
 }
 function salvarUsuarios(usuarios) {
-    fs.writeFileSync(usuariosFile, JSON.stringify(usuarios, null, 2), 'utf-8');
+    try {
+        fs.writeFileSync(usuariosFile, JSON.stringify(usuarios, null, 2), 'utf-8');
+    } catch (e) {
+        console.error('Erro ao salvar usuários:', e);
+        throw e;
+    }
 }
 
 // --- FUNÇÕES AUXILIARES (PRODUTOS) ---
 function lerProdutos() {
-    if (!fs.existsSync(produtosFile)) return [];
-    const dados = fs.readFileSync(produtosFile, 'utf8');
-    try { return JSON.parse(dados) || []; } catch (e) { return []; }
+    try {
+        if (!fs.existsSync(produtosFile)) return [];
+        const dados = fs.readFileSync(produtosFile, 'utf8');
+        return JSON.parse(dados) || [];
+    } catch (e) {
+        console.error('Erro ao ler produtos:', e);
+        return [];
+    }
 }
 function salvarProdutos(produtos) {
-    fs.writeFileSync(produtosFile, JSON.stringify(produtos, null, 2), 'utf-8');
+    try {
+        fs.writeFileSync(produtosFile, JSON.stringify(produtos, null, 2), 'utf-8');
+    } catch (e) {
+        console.error('Erro ao salvar produtos:', e);
+        throw e;
+    }
 }
 
 /*
